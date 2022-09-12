@@ -5,13 +5,13 @@ import java.util.Scanner;
 
 public class Exe {
     public static void main(String[] args) throws FileNotFoundException, IOException {
-
         Scanner sc = new Scanner(System.in);
 
         try (
                 // CREAR ARCHIVO O LEERLO
                 RandomAccessFile v_archivo = new RandomAccessFile("./flotantes.bin", "rw")) {
-            // Metemos 10 flotantes aleatorios al archivo
+            
+                    // Metemos 10 flotantes aleatorios al archivo
 
             v_archivo.seek(0);
 
@@ -28,20 +28,24 @@ public class Exe {
             }
 
             System.out.println("----------ARCHIVO FLOTANTES----------");
+            v_archivo.seek(0);
             int contador2;
             for (contador2 = 0; contador2 < 20; contador2++) {
-                float v_valor =  v_archivo.readFloat();
+                float v_valor = v_archivo.readFloat();
                 // Mostrar los flotantes
                 System.out.println(v_valor);
             }
 
             System.out.println("Ingrese el valor del flotante a cambiar.");
             float v_floatACambiar = sc.nextFloat();
+            System.out.println("Ingrese el nuevo valor del flotante");
+            float v_newFloat = sc.nextFloat();
 
+            v_archivo.seek(0);
             for (contador = 0; contador < 20; contador++) {
                 if (v_archivo.readFloat() == v_floatACambiar) {
-                    v_archivo.seek(contador * 8);
-                    v_archivo.writeFloat(v_floatACambiar);
+                    v_archivo.seek(contador * 4);
+                    v_archivo.writeFloat(v_newFloat);
                     return;
                 } else {
                     if (contador == 19) {
@@ -49,11 +53,12 @@ public class Exe {
                     }
                 }
             }
-
             System.out.println("----------ARCHIVO FLOTANTES----------");
-            for (contador = 0; contador < 20; contador++) {
+            v_archivo.seek(0);
+            for (contador2 = 0; contador2 < 20; contador2++) {
+                float v_valor = v_archivo.readFloat();
                 // Mostrar los flotantes
-                System.out.println(v_archivo.readFloat());
+                System.out.println(v_valor);
             }
 
             try {
