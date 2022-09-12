@@ -11,7 +11,7 @@ public class BinaryFile {
     BinaryFile(String p_location, String p_mode) {
         try {
             // Create the file with RandomAccessFile
-            a_file = new RandomAccessFile(a_location, a_mode);
+            a_file = new RandomAccessFile(p_location, p_mode);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -29,6 +29,7 @@ public class BinaryFile {
 
     // Method to write to the file the number of floats that the user wants
     public void m_writeRandomFloats(int p_numFloats) {
+        m_position(0);
         int counter;
         for (counter = 0; counter < p_numFloats; counter++) {
             // Generate random floats
@@ -48,10 +49,10 @@ public class BinaryFile {
         m_position(0);
         int counter;
         // Like a title
-        System.out.println("----------ARCHIVO FLOTANTES----------");
+        System.out.println("----------FILE DATA----------");
         // Read and print all the floats
         try {
-            for (counter = 0; counter < a_file.length(); counter++) {
+            for (counter = 0; counter * 4 < a_file.length(); counter++) {
                 float v_value;
                 try {
                     v_value = a_file.readFloat();
@@ -67,21 +68,26 @@ public class BinaryFile {
 
     // Method to change a value of the file for an other one
     public void m_changeAValue(float p_valueToChange, float p_newValue) {
+        m_position(0);
         int counter;
-        for (counter = 0; counter < 20; counter++) {
-            try {
-                if (a_file.readFloat() == p_valueToChange) {
-                    a_file.seek(counter * 4);
-                    a_file.writeFloat(p_newValue);
-                    return;
-                } else {
-                    if (counter == 19) {
-                        System.out.println("No se ha encontrado el float a cambiar");
+        try {
+            for (counter = 0; counter < a_file.length(); counter++) {
+                try {
+                    if (a_file.readFloat() == p_valueToChange) {
+                        a_file.seek(counter * 4);
+                        a_file.writeFloat(p_newValue);
+                        return;
+                    } else {
+                        if (counter == 19) {
+                            System.out.println("No se ha encontrado el float a cambiar");
+                        }
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
