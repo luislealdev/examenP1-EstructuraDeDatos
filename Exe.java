@@ -12,7 +12,6 @@ public class Exe {
                 RandomAccessFile v_archivo = new RandomAccessFile("./flotantes.bin", "rw")) {
             
                     // Metemos 10 flotantes aleatorios al archivo
-
             v_archivo.seek(0);
 
             int contador;
